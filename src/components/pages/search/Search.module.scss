@@ -1,0 +1,41 @@
+.search {
+  padding-block: 40px;
+  .content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+    .movie_box {
+      width: 215px;
+      height: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      img {
+        border-radius: 15px;
+        width: 100%;
+        max-width: 220px;
+      }
+      .card_info {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        .movieTitle {
+          max-width: 215px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: 22px;
+          font-weight: 500;
+          line-height: 25px;
+        }
+        p {
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}

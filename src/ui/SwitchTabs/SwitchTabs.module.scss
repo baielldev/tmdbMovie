@@ -1,0 +1,50 @@
+.toggle {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  padding: 5px;
+  width: 200px;
+  cursor: pointer;
+
+  .slider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    background-color: #d62b6f;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    z-index: 0;
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      left: 50%;
+    }
+  }
+
+  span {
+    z-index: 1;
+    flex: 1;
+    text-align: center;
+    padding: 5px 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #d62b6f;
+    }
+
+    &.activeBtn {
+      color: #fff;
+    }
+  }
+}

@@ -1,0 +1,44 @@
+.detailCast {
+  .cast_title {
+    display: flex;
+    align-items: flex-start;
+    padding-block: 30px;
+
+    h1 {
+      font-size: 25px;
+      font-weight: 400;
+    }
+  }
+  .content {
+    overflow-x: auto;
+    scrollbar-width: none;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding-block: 10px;
+    .cast {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      line-height: 28px;
+      gap: 10px;
+
+      img {
+        width: 194px;
+        height: 194px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      h1 {
+        font-size: 20px;
+        font-weight: 400;
+      }
+      p {
+        font-size: 18px;
+        font-weight: 500;
+        color: #828a96;
+      }
+    }
+  }
+}
