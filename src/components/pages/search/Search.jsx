@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import scss from "./Search.module.scss";
 import { useMoviesStore } from "../../../store/useMoviesStore";
 import { Link, useParams } from "react-router-dom";

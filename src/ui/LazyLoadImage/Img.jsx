@@ -25,7 +25,7 @@ const Img = () => {
     <LazyLoadImage
       style={{ objectFit: "cover", backgroundPosition: "center" }}
       alt=""
-      height="600px"
+      height="680px"
       src={imageUrl}
       width="100%"
     />

@@ -7,9 +7,19 @@ import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const { singUpWithGoogle, register } = useAuth();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const registerUser = () => {
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      return alert("Please fill in all fields.");
+    }
+    register(name, email, password);
+    navigate("/");
+  };
 
   return (
     <div className={scss.signUp}>
@@ -35,10 +45,7 @@ const SignUp = () => {
               variant="underlined"
               value={password}
             />
-            <Button
-              onClick={() => register(name, email, password)}
-              className={scss.btn}
-            >
+            <Button onClick={() => registerUser()} className={scss.btn}>
               Sign Up
             </Button>
             <Button

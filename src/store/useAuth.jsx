@@ -8,7 +8,6 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 
 const googleProvider = new GoogleAuthProvider();
 export const useAuth = create((set) => ({
@@ -32,12 +31,14 @@ export const useAuth = create((set) => ({
 
   register: async (name, email, password) => {
     try {
-      let { user } = await createUserWithEmailAndPassword(
+      const { user } = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      updateProfile(user, { displayName: name });
+      await updateProfile(user, { displayName: name });
+
+      set({ user, error: null });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
       set({ error: error.message });

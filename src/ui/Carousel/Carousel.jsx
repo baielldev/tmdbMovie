@@ -3,8 +3,14 @@ import { FaCircleArrowRight, FaCircleArrowLeft } from "react-icons/fa6";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import Rating from "../rating/Rating";
 import { useRef, useState } from "react";
+import { useMoviesStore } from "../../store/useMoviesStore";
+import SkeletonCard from "../skeleton/SkeletonCard";
 
 const Carousel = ({ data }) => {
+  const { loader } = useMoviesStore();
+  setTimeout(() => {
+    loader;
+  }, 2000);
   const carouselRef = useRef();
   const [show, setShow] = useState(0);
 
@@ -40,12 +46,16 @@ const Carousel = ({ data }) => {
         )}
 
         <div ref={carouselRef} className={scss.list}>
-          {data?.map((item, index) => (
-            <div key={index}>
-              <MoviesCard item={item} />
-              <Rating rating={item.vote_average} />
-            </div>
-          ))}
+          {loader
+            ? Array(6)
+                .fill(0)
+                .map((_, index) => <SkeletonCard key={index} />)
+            : data?.map((item, index) => (
+                <div key={index}>
+                  <MoviesCard item={item} />
+                  <Rating rating={item.vote_average} />
+                </div>
+              ))}
         </div>
       </div>
     </div>

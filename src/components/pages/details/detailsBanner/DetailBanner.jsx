@@ -3,13 +3,13 @@ import { useMoviesStore } from "../../../../store/useMoviesStore";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import { useEffect, useState } from "react";
 import notImg from "../../../../assets/Снимок экрана 2025-06-21 в 15.28.03.png";
+import SkeletonBanner from "../../../../ui/skeleton/bannerSkeleton/SkeletonBanner";
 
 const DetailBanner = ({ id }) => {
-  const { oneMovie, trailer, getTrailerMovie } = useMoviesStore();
+  const { oneMovie, trailer, getTrailerMovie, loader } = useMoviesStore();
 
   const [modalWindow, setModalWindow] = useState(false);
   const [videoKey, setVideoKey] = useState("");
-
   const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
@@ -50,6 +50,10 @@ const DetailBanner = ({ id }) => {
   const longWords = words.length > 300;
   const shortWords = words.slice(0, 300).join("") + "...";
 
+  if (loader) {
+    return <SkeletonBanner />;
+  }
+
   return (
     <div className={scss.detailBanner}>
       <img
@@ -82,7 +86,7 @@ const DetailBanner = ({ id }) => {
                     pathColor: getColor(oneMovie.vote_average),
                     trailColor: "#fff",
                     textColor: "#fff",
-                    textSize: "24px", //
+                    textSize: "24px",
                     pathTransitionDuration: 0.5,
                     strokeLinecap: "round",
                   })}
@@ -162,9 +166,9 @@ const DetailBanner = ({ id }) => {
             height="535"
             src={`https://www.youtube.com/embed/${videoKey}`}
             title={trailer.title}
-            frameborder="0"
+            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
+            referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
           ></iframe>
         </div>

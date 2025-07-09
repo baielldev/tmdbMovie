@@ -1,6 +1,8 @@
 .detailBanner {
-  padding-block: 50px;
-  background: linear-gradient(to bottom, rgba(5, 4, 4, 0.694), #171717);
+  padding-top: 130px;
+  padding-bottom: 30px;
+  background: linear-gradient(to bottom, rgba(5, 4, 4, 0.694), #141f2d);
+  position: relative;
 
   .backgroundBanner {
     position: absolute;
@@ -8,7 +10,7 @@
     left: 0;
     width: 100%;
     z-index: -1;
-    height: 680px;
+    height: 100%;
     object-fit: cover;
   }
   .content {

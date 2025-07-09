@@ -4,8 +4,14 @@ import { useMoviesStore } from "../../../../../store/useMoviesStore";
 import { Link, useParams } from "react-router-dom";
 import notImg from "../../../../../assets/Снимок экрана 2025-06-21 в 15.28.03.png";
 const DetailActor = () => {
-  const { detailActor, getDetailActor, getDetailActorFameFor, actorFameFor } =
-    useMoviesStore();
+  const {
+    detailActor,
+    getDetailActor,
+    getDetailActorFameFor,
+    actorFameFor,
+    mediaTypePopular,
+    mediaTypeTopRated,
+  } = useMoviesStore();
   const [showMore, setShowMore] = useState(false);
   const { id } = useParams();
 
@@ -51,7 +57,11 @@ const DetailActor = () => {
               {Array.isArray(actorFameFor) &&
                 actorFameFor.map((item, index) => (
                   <div key={index} className={scss.fameMovie}>
-                    <Link to={`/movie/${item.id}`}>
+                    <Link
+                      to={`/${mediaTypePopular || mediaTypeTopRated}/${
+                        item.id
+                      }`}
+                    >
                       <img
                         src={
                           item.backdrop_path

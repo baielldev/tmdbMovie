@@ -1,11 +1,17 @@
 .header {
-  background: rgba(22, 22, 22, 0.815);
-  backdrop-filter: blur(10px);
+  position: fixed;
+  top: 0;
+  background: #00000067;
+  backdrop-filter: blur(8px);
   padding-block: 10px;
+  z-index: 999;
+  width: 100%;
+  transition: transform 0.3s ease-in-out;
   .content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
     .logo {
       h1 {
         font-size: 30px;
@@ -40,10 +46,6 @@
         width: 0%;
         background-color: red;
         transition: width 0.3s ease;
-      }
-
-      &:hover::after {
-        width: 100%;
       }
     }
 
@@ -88,4 +90,9 @@
       }
     }
   }
+}
+
+.hide {
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-in-out;
 }

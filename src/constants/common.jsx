@@ -3,7 +3,6 @@ import DetailActor from "../components/pages/details/cast/detailActor/DetailActo
 import DetailsPage from "../components/pages/details/DetailsPage";
 import MoviesPage from "../components/pages/moviesPage/MoviesPage";
 import Search from "../components/pages/search/Search";
-import SeriesPage from "../components/pages/seriesPage/SeriesPage";
 import TvShowPage from "../components/pages/tvShowPage/TvShowPage";
 import Home from "../home/Home";
 
@@ -15,10 +14,6 @@ export const navHeader = [
   {
     name: "TV Shows",
     path: "/tv-shows",
-  },
-  {
-    name: "Series",
-    path: "/series",
   },
 ];
 
@@ -34,10 +29,6 @@ export const route = [
   {
     link: "/tv-shows",
     element: <TvShowPage />,
-  },
-  {
-    link: "/series",
-    element: <SeriesPage />,
   },
   {
     link: "/movie/:id",

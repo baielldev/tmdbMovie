@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import scss from "./Header.module.scss";
 import { Badge, Input } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
 import ProfileMenu from "../../../authentication/ProfileMenu/ProfileMenu";
 import BookmarksOutlinedIcon from "@mui/icons-material/BookmarksOutlined";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,16 +20,36 @@ const Header = () => {
   const [value, setValue] = useState("");
   const navigate = useNavigate();
 
-  const searchBtn = () => {
-    if (!value.trim()) {
-      return alert("Enter your search query.");
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const searchBtn = (event) => {
+    if (event.key === "Enter") {
+      if (!value.trim()) {
+        return alert("Enter your search query.");
+      }
+      getSearchMovie(value);
+      navigate(`/search/${value}`);
     }
-    getSearchMovie(value);
-    navigate(`/search/${value}`);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 150) {
+        setShowHeader(false);
+      } else {
+        setShowHeader(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <header className={scss.header}>
+    <header className={`${scss.header} ${!showHeader ? scss.hide : ""}`}>
       <div className="container">
         <div className={scss.content}>
           <div className={scss.logo}>
@@ -62,7 +81,7 @@ const Header = () => {
               className={scss.search}
               size="large"
               placeholder="Search..."
-              prefix={<SearchOutlined onClick={searchBtn} />}
+              onKeyDown={searchBtn}
             />
             {user ? (
               <Badge size="small" count={5}>
@@ -82,4 +101,5 @@ const Header = () => {
     </header>
   );
 };
+
 export default Header;

@@ -1,5 +1,5 @@
 .moviesPage {
-  padding-block: 30px;
+  padding-block: 120px;
   .moviesTitle {
     display: flex;
     justify-content: space-between;
@@ -11,12 +11,6 @@
     .selects {
       display: flex;
       gap: 20px;
-
-      .selectGenres {
-        color: #000;
-      }
-      .selectSort {
-      }
     }
   }
   .content {

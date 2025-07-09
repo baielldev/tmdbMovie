@@ -12,6 +12,18 @@ const HomeBanner = () => {
   const navigate = useNavigate();
 
   const searchBtn = () => {
+    if (event.key === "Enter") {
+      if (!value.trim()) {
+        return alert("Enter your search query.");
+      }
+      getSearchMovie(value);
+      navigate(`/search/${value}`);
+    }
+  };
+  const searchWithBtn = () => {
+    if (!value.trim()) {
+      return alert("Enter your search query.");
+    }
     getSearchMovie(value);
     navigate(`/search/${value}`);
   };
@@ -35,8 +47,9 @@ const HomeBanner = () => {
               onChange={(e) => setValue(e.target.value)}
               type="text"
               placeholder="Search for a movie or tv show...."
+              onKeyDown={searchBtn}
             />
-            <button onClick={searchBtn}>Search</button>
+            <button onClick={searchWithBtn}>Search</button>
           </div>
         </div>
       </div>

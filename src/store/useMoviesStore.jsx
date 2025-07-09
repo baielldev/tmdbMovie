@@ -47,11 +47,12 @@ export const useMoviesStore = create((set, get) => ({
       const { data } = await axios.get(
         `${BASE_URL}/${mediaTypePopular}/popular?api_key=${API_KEY}&language=en-US&page=1`
       );
-      set({ moviesPopular: data.results, loader: false });
+      set({ moviesPopular: data.results });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 
   getTrending: async () => {
@@ -61,11 +62,12 @@ export const useMoviesStore = create((set, get) => ({
       const { data } = await axios.get(
         `${BASE_URL}/trending/movie/${timeWindow}?api_key=${API_KEY}`
       );
-      set({ moviesTrending: data.results, loader: false });
+      set({ moviesTrending: data.results });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 
   getTopRated: async () => {
@@ -75,11 +77,12 @@ export const useMoviesStore = create((set, get) => ({
       const { data } = await axios.get(
         `${BASE_URL}/${mediaTypeTopRated}/top_rated?api_key=${API_KEY}&language=en-US&page=1`
       );
-      set({ moviesTopRated: data.results, loader: false });
+      set({ moviesTopRated: data.results });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 
   getDetails: async (id) => {
@@ -88,26 +91,34 @@ export const useMoviesStore = create((set, get) => ({
     set({ loader: true, error: null });
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/${mediaTypePopular}/${id}?api_key=${API_KEY}&language=en-US`
+        `${BASE_URL}/${
+          mediaTypePopular || mediaTypeTopRated
+        }/${id}?api_key=${API_KEY}&language=en-US`
       );
-      set({ oneMovie: data, loader: false });
+      set({ oneMovie: data });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 
   getActors: async (id) => {
+    const { mediaTypePopular, mediaTypeTopRated } = get();
+
     set({ loader: true, error: null });
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=en-US`
+        `${BASE_URL}/${
+          mediaTypePopular || mediaTypeTopRated
+        }/${id}/credits?api_key=${API_KEY}&language=en-US`
       );
-      set({ actorMovie: data.cast, loader: false });
+      set({ actorMovie: data.cast });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 
   getDetailActor: async (actorId) => {
@@ -117,11 +128,12 @@ export const useMoviesStore = create((set, get) => ({
       const { data } = await axios.get(
         `${BASE_URL}/person/${actorId}?api_key=${API_KEY}&language=en-US`
       );
-      set({ detailActor: data, loader: false });
+      set({ detailActor: data });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 
   getDetailActorFameFor: async (actorId) => {
@@ -130,66 +142,87 @@ export const useMoviesStore = create((set, get) => ({
       const { data } = await axios.get(
         `${BASE_URL}/person/${actorId}/movie_credits?api_key=${API_KEY}&language=en-US`
       );
-      set({ actorFameFor: data.cast, loader: false });
+      set({ actorFameFor: data.cast });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 
   getTrailerMovie: async (id) => {
+    const { mediaTypePopular, mediaTypeTopRated } = get();
+
     set({ loader: true, error: null });
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}&language=en-US`
+        `${BASE_URL}/${
+          mediaTypePopular || mediaTypeTopRated
+        }/${id}/videos?api_key=${API_KEY}&language=en-US`
       );
       const trailer = data.results.find(
         (video) => video.type === "Trailer" && video.site === "YouTube"
       );
-      set({ trailer, loader: false });
+      set({ trailer });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 
   getDetailOfficialTrailer: async (id) => {
+    const { mediaTypePopular, mediaTypeTopRated } = get();
+
     set({ loader: true, error: null });
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}&language=en-US`
+        `${BASE_URL}/${
+          mediaTypePopular || mediaTypeTopRated
+        }/${id}/videos?api_key=${API_KEY}&language=en-US`
       );
-      set({ trailerMovie: data.results, loader: false });
+      set({ trailerMovie: data.results });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 
   getSimilarMovies: async (id) => {
+    const { mediaTypePopular, mediaTypeTopRated } = get();
+
     set({ loader: true, error: null });
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/movie/${id}/similar?api_key=${API_KEY}&language=en-US&page=1`
+        `${BASE_URL}/${
+          mediaTypePopular || mediaTypeTopRated
+        }/${id}/similar?api_key=${API_KEY}&language=en-US&page=1`
       );
-      set({ similarMovies: data.results, loader: false });
+      set({ similarMovies: data.results });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 
   getRecommendationsMovies: async (id) => {
+    const { mediaTypePopular, mediaTypeTopRated } = get();
+
     set({ loader: true, error: null });
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/movie/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`
+        `${BASE_URL}/${
+          mediaTypePopular || mediaTypeTopRated
+        }/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`
       );
-      set({ recommendationsMovie: data.results, loader: false });
+      set({ recommendationsMovie: data.results });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 
   getMoviesPage: async () => {
@@ -198,11 +231,12 @@ export const useMoviesStore = create((set, get) => ({
       const { data } = await axios.get(
         `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1`
       );
-      set({ moviesPage: data.results, loader: false });
+      set({ moviesPage: data.results });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 
   getTvShowsPage: async () => {
@@ -210,10 +244,11 @@ export const useMoviesStore = create((set, get) => ({
       const { data } =
         await axios.get(`${BASE_URL}/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&with_genres=18
 `);
-      set({ tvShowsPage: data.results, loader: false });
+      set({ tvShowsPage: data.results });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message, loader: false });
+      set({ error: error.message });
     }
+    set({ loader: false });
   },
 }));
