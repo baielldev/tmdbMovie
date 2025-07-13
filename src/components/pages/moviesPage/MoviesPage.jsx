@@ -3,53 +3,35 @@ import { useMoviesStore } from "../../../store/useMoviesStore";
 import scss from "./MoviesPage.module.scss";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-const OPTIONS = [
-  "Action",
-  "Adventure",
-  "Animation",
-  "Comedy",
-  "Crime",
-  "Documentary",
-  "Drama",
-  "Family",
-  "Fantasy",
-  "History",
-  "Horror",
-  "Music",
-  "Mystery",
-  "Romance",
-  "Science fiction",
-  "TV Movie",
-  "Thriller",
-  "War",
-  "Western",
-];
+import notImg from "../../../assets/Снимок экрана 2025-06-21 в 15.28.03.png";
 
 const OPTIONS_SORT = [
-  "Popularity Descending",
-  "Popularity Ascending",
-  "Rating Descending",
-  "Rating Ascending",
-  "Release Date Descending",
-  "Release Date Ascending",
-  "Title (A-Z)",
+  { label: "Popularity Descending", value: "popularity.desc" },
+  { label: "Popularity Ascending", value: "popularity.asc" },
+  { label: "Rating Descending", value: "vote_average.desc" },
+  { label: "Rating Ascending", value: "vote_average.asc" },
+  { label: "Release Date Descending", value: "release_date.desc" },
+  { label: "Release Date Ascending", value: "release_date.asc" },
+  { label: "Title (A-Z)", value: "original_title.asc" },
 ];
 
 const MoviesPage = () => {
-  const { moviesPage, getMoviesPage } = useMoviesStore();
+  const { moviesPage, getMoviesPage, getGenresMovie, genresMovie } =
+    useMoviesStore();
   const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedItemsSort, setSelectedItemsSort] = useState([]);
+  const [selectedItemsSort, setSelectedItemsSort] = useState("popularity.desc");
 
-  const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
-  const filteredOptionsSort = OPTIONS_SORT.filter(
-    (o) => !selectedItemsSort.includes(o)
+  const filteredOptions = genresMovie.filter(
+    (genre) => !selectedItems.includes(genre.id)
   );
 
   useEffect(() => {
-    getMoviesPage();
-  }, [selectedItems]);
-  console.log(moviesPage);
+    getGenresMovie();
+  }, []);
+
+  useEffect(() => {
+    getMoviesPage(selectedItems, selectedItemsSort);
+  }, [selectedItems, selectedItemsSort]);
 
   return (
     <div className={scss.moviesPage}>
@@ -62,24 +44,24 @@ const MoviesPage = () => {
               mode="multiple"
               placeholder="Select genres"
               value={selectedItems}
-              onChange={setSelectedItems}
+              onChange={(values) => {
+                setSelectedItems(values);
+              }}
               style={{ width: "250px" }}
               options={filteredOptions.map((item) => ({
-                value: item,
-                label: item,
+                value: item.id,
+                label: item.name,
               }))}
             />
             <Select
               className={scss.selectSort}
-              mode="multiple"
-              placeholder="Sort by.."
+              placeholder="Sort by..."
               value={selectedItemsSort}
-              onChange={setSelectedItemsSort}
+              onChange={(value) => {
+                setSelectedItemsSort(value);
+              }}
               style={{ width: "250px" }}
-              options={filteredOptionsSort.map((item) => ({
-                value: item,
-                label: item,
-              }))}
+              options={OPTIONS_SORT}
             />
           </div>
         </div>

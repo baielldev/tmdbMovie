@@ -15,7 +15,9 @@ export const useMoviesStore = create((set, get) => ({
   similarMovies: [],
   recommendationsMovie: [],
   moviesPage: [],
+  genresMovie: [],
   tvShowsPage: [],
+  genresTv: [],
   loader: false,
   error: null,
   mediaTypePopular: "movie",
@@ -206,31 +208,41 @@ export const useMoviesStore = create((set, get) => ({
     set({ loader: false });
   },
 
-  getMoviesPage: async () => {
-    set({ loader: true, error: null });
-    try {
-      const { data } = await axios.get(
-        `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1`
-      );
-      set({ moviesPage: data.results });
-    } catch (error) {
-      console.error("Ошибка запроса:", error.message);
-      set({ error: error.message });
-    }
-    set({ loader: false });
+  getMoviesPage: async (genreIds = [], sortBy = "popularity.desc") => {
+    const genreParam = genreIds.length
+      ? `&with_genres=${genreIds.join(",")}`
+      : "";
+    const sortParam = `&sort_by=${sortBy}`;
+
+    const { data } = await axios.get(
+      `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-US${genreParam}${sortParam}`
+    );
+    set({ moviesPage: data.results });
   },
 
-  getTvShowsPage: async () => {
-    set({ loader: true, error: null });
-    try {
-      const { data } = await axios.get(
-        `${BASE_URL}/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&with_genres=18`
-      );
-      set({ tvShowsPage: data.results });
-    } catch (error) {
-      console.error("Ошибка запроса:", error.message);
-      set({ error: error.message });
-    }
-    set({ loader: false });
+  getTvShowsPage: async (genreIds = [], sortBy = "popularity.desc") => {
+    const genreParam = genreIds.length
+      ? `&with_genres=${genreIds.join(",")}`
+      : "";
+    const sortParam = `&sort_by=${sortBy}`;
+
+    const { data } = await axios.get(
+      `${BASE_URL}/discover/tv?api_key=${API_KEY}&language=en-US${genreParam}${sortParam}`
+    );
+    set({ tvShowsPage: data.results });
+  },
+
+  getGenresMovie: async () => {
+    const { data } = await axios.get(
+      `${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=en-US`
+    );
+    set({ genresMovie: data.genres });
+  },
+
+  getGenresTv: async () => {
+    const { data } = await axios.get(
+      `${BASE_URL}/genre/tv/list?api_key=${API_KEY}&language=en-US`
+    );
+    set({ genresTv: data.genres });
   },
 }));

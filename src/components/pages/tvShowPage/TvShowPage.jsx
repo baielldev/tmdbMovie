@@ -5,53 +5,34 @@ import { useMoviesStore } from "../../../store/useMoviesStore";
 import { Link } from "react-router-dom";
 import notImg from "../../../assets/Снимок экрана 2025-06-21 в 15.28.03.png";
 
-const OPTIONS = [
-  "Action",
-  "Adventure",
-  "Animation",
-  "Comedy",
-  "Crime",
-  "Documentary",
-  "Drama",
-  "Family",
-  "Fantasy",
-  "History",
-  "Horror",
-  "Music",
-  "Mystery",
-  "Romance",
-  "Science fiction",
-  "TV Movie",
-  "Thriller",
-  "War",
-  "Western",
-];
-
 const OPTIONS_SORT = [
-  "Popularity Descending",
-  "Popularity Ascending",
-  "Rating Descending",
-  "Rating Ascending",
-  "Release Date Descending",
-  "Release Date Ascending",
-  "Title (A-Z)",
+  { label: "Popularity Descending", value: "popularity.desc" },
+  { label: "Popularity Ascending", value: "popularity.asc" },
+  { label: "Rating Descending", value: "vote_average.desc" },
+  { label: "Rating Ascending", value: "vote_average.asc" },
+  { label: "Release Date Descending", value: "first_air_date.desc" },
+  { label: "Release Date Ascending", value: "first_air_date.asc" },
+  { label: "Title (A-Z)", value: "original_name.asc" },
 ];
 
 const TvShowPage = () => {
-  const { getTvShowsPage, tvShowsPage } = useMoviesStore();
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedItemsSort, setSelectedItemsSort] = useState([]);
+  const { getTvShowsPage, tvShowsPage, genresTv, getGenresTv } =
+    useMoviesStore();
 
-  const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
-  const filteredOptionsSort = OPTIONS_SORT.filter(
-    (o) => !selectedItemsSort.includes(o)
-  );
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedSort, setSelectedSort] = useState("popularity.desc");
 
-  console.log(tvShowsPage);
+  const filteredGenres = genresTv.filter((g) => !selectedGenres.includes(g.id));
 
   useEffect(() => {
-    getTvShowsPage();
+    getGenresTv();
+    getTvShowsPage([], "popularity.desc");
   }, []);
+
+  useEffect(() => {
+    getTvShowsPage(selectedGenres, selectedSort);
+  }, [selectedGenres, selectedSort]);
+
   return (
     <div className={scss.tvShow}>
       <div className="container">
@@ -62,25 +43,21 @@ const TvShowPage = () => {
               className={scss.selectGenres}
               mode="multiple"
               placeholder="Select genres"
-              value={selectedItems}
-              onChange={setSelectedItems}
+              value={selectedGenres}
+              onChange={setSelectedGenres}
               style={{ width: "250px" }}
-              options={filteredOptions.map((item) => ({
-                value: item,
-                label: item,
+              options={filteredGenres.map((item) => ({
+                value: item.id,
+                label: item.name,
               }))}
             />
             <Select
               className={scss.selectSort}
-              mode="multiple"
-              placeholder="Sort by.."
-              value={selectedItemsSort}
-              onChange={setSelectedItemsSort}
+              placeholder="Sort by..."
+              value={selectedSort}
+              onChange={setSelectedSort}
               style={{ width: "250px" }}
-              options={filteredOptionsSort.map((item) => ({
-                value: item,
-                label: item,
-              }))}
+              options={OPTIONS_SORT}
             />
           </div>
         </div>
@@ -94,16 +71,14 @@ const TvShowPage = () => {
                       ? `https://media.themoviedb.org/t/p/w440_and_h660_face${item.poster_path}`
                       : notImg
                   }
-                  alt={`${item.title} poster`}
+                  alt={item.name}
                 />
               </Link>
               <div className={scss.card_info}>
                 <h1 className={scss.movieTitle}>
-                  {item.title ? item.title : item.original_name}
+                  {item.name || item.original_name}
                 </h1>
-                <p>
-                  {item.release_date ? item.release_date : item.first_air_date}
-                </p>
+                <p>{item.first_air_date}</p>
               </div>
             </div>
           ))}
