@@ -85,33 +85,27 @@ export const useMoviesStore = create((set, get) => ({
     set({ loader: false });
   },
 
-  getDetails: async (id) => {
-    const { mediaTypePopular, mediaTypeTopRated } = get();
-
+  getDetails: async (id, mediaType) => {
     set({ loader: true, error: null });
+
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/${
-          mediaTypePopular || mediaTypeTopRated
-        }/${id}?api_key=${API_KEY}&language=en-US`
+        `${BASE_URL}/${mediaType}/${id}?api_key=${API_KEY}&language=en-US`
       );
       set({ oneMovie: data });
     } catch (error) {
-      console.error("Ошибка запроса:", error.message);
       set({ error: error.message });
     }
+
     set({ loader: false });
   },
 
-  getActors: async (id) => {
-    const { mediaTypePopular, mediaTypeTopRated } = get();
-
+  getActors: async (id, mediaType = null) => {
     set({ loader: true, error: null });
+    const type = mediaType || get().mediaTypePopular;
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/${
-          mediaTypePopular || mediaTypeTopRated
-        }/${id}/credits?api_key=${API_KEY}&language=en-US`
+        `${BASE_URL}/${type}/${id}/credits?api_key=${API_KEY}&language=en-US`
       );
       set({ actorMovie: data.cast });
     } catch (error) {
@@ -124,7 +118,6 @@ export const useMoviesStore = create((set, get) => ({
   getDetailActor: async (actorId) => {
     set({ loader: true, error: null });
     try {
-      set({ loader: false });
       const { data } = await axios.get(
         `${BASE_URL}/person/${actorId}?api_key=${API_KEY}&language=en-US`
       );
@@ -150,15 +143,12 @@ export const useMoviesStore = create((set, get) => ({
     set({ loader: false });
   },
 
-  getTrailerMovie: async (id) => {
-    const { mediaTypePopular, mediaTypeTopRated } = get();
-
+  getTrailerMovie: async (id, mediaType = null) => {
     set({ loader: true, error: null });
+    const type = mediaType || get().mediaTypePopular;
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/${
-          mediaTypePopular || mediaTypeTopRated
-        }/${id}/videos?api_key=${API_KEY}&language=en-US`
+        `${BASE_URL}/${type}/${id}/videos?api_key=${API_KEY}&language=en-US`
       );
       const trailer = data.results.find(
         (video) => video.type === "Trailer" && video.site === "YouTube"
@@ -166,20 +156,17 @@ export const useMoviesStore = create((set, get) => ({
       set({ trailer });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);
-      set({ error: error.message });
+      set({ error: error.message, trailerMovie: [] });
     }
     set({ loader: false });
   },
 
-  getDetailOfficialTrailer: async (id) => {
-    const { mediaTypePopular, mediaTypeTopRated } = get();
-
+  getDetailOfficialTrailer: async (id, mediaType = null) => {
     set({ loader: true, error: null });
+    const type = mediaType || get().mediaTypePopular;
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/${
-          mediaTypePopular || mediaTypeTopRated
-        }/${id}/videos?api_key=${API_KEY}&language=en-US`
+        `${BASE_URL}/${type}/${id}/videos?api_key=${API_KEY}&language=en-US`
       );
       set({ trailerMovie: data.results });
     } catch (error) {
@@ -189,15 +176,12 @@ export const useMoviesStore = create((set, get) => ({
     set({ loader: false });
   },
 
-  getSimilarMovies: async (id) => {
-    const { mediaTypePopular, mediaTypeTopRated } = get();
-
+  getSimilarMovies: async (id, mediaType = null) => {
     set({ loader: true, error: null });
+    const type = mediaType || get().mediaTypePopular;
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/${
-          mediaTypePopular || mediaTypeTopRated
-        }/${id}/similar?api_key=${API_KEY}&language=en-US&page=1`
+        `${BASE_URL}/${type}/${id}/similar?api_key=${API_KEY}&language=en-US&page=1`
       );
       set({ similarMovies: data.results });
     } catch (error) {
@@ -207,15 +191,12 @@ export const useMoviesStore = create((set, get) => ({
     set({ loader: false });
   },
 
-  getRecommendationsMovies: async (id) => {
-    const { mediaTypePopular, mediaTypeTopRated } = get();
-
+  getRecommendationsMovies: async (id, mediaType = null) => {
     set({ loader: true, error: null });
+    const type = mediaType || get().mediaTypePopular;
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/${
-          mediaTypePopular || mediaTypeTopRated
-        }/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`
+        `${BASE_URL}/${type}/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`
       );
       set({ recommendationsMovie: data.results });
     } catch (error) {
@@ -240,10 +221,11 @@ export const useMoviesStore = create((set, get) => ({
   },
 
   getTvShowsPage: async () => {
+    set({ loader: true, error: null });
     try {
-      const { data } =
-        await axios.get(`${BASE_URL}/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&with_genres=18
-`);
+      const { data } = await axios.get(
+        `${BASE_URL}/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&with_genres=18`
+      );
       set({ tvShowsPage: data.results });
     } catch (error) {
       console.error("Ошибка запроса:", error.message);

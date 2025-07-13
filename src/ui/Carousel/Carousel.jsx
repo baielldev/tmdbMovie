@@ -8,9 +8,6 @@ import SkeletonCard from "../skeleton/SkeletonCard";
 
 const Carousel = ({ data }) => {
   const { loader } = useMoviesStore();
-  setTimeout(() => {
-    loader;
-  }, 2000);
   const carouselRef = useRef();
   const [show, setShow] = useState(0);
 

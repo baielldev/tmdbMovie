@@ -9,14 +9,14 @@ import Recommendations from "./carousels/recommendationsMovie/Recommendations";
 
 const DetailsPage = () => {
   const { getDetails } = useMoviesStore();
-  const { id } = useParams();
+  const { id, mediaType } = useParams();
   useEffect(() => {
     getDetails(id);
   }, [id]);
 
   return (
     <div>
-      <DetailBanner id={id} />
+      <DetailBanner id={id} mediaType={mediaType} />
       <DetailCast id={id} />
       <DetailVideo id={id} />
       <Similar id={id} />

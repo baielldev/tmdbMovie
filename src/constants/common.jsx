@@ -31,13 +31,10 @@ export const route = [
     element: <TvShowPage />,
   },
   {
-    link: "/movie/:id",
+    link: "/:mediaType/:id",
     element: <DetailsPage />,
   },
-  {
-    link: "/tv/:id",
-    element: <DetailsPage />,
-  },
+
   {
     link: "/person/:id",
     element: <DetailActor />,

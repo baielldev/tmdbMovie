@@ -5,16 +5,18 @@ import { useEffect, useState } from "react";
 import notImg from "../../../../assets/Снимок экрана 2025-06-21 в 15.28.03.png";
 import SkeletonBanner from "../../../../ui/skeleton/bannerSkeleton/SkeletonBanner";
 
-const DetailBanner = ({ id }) => {
-  const { oneMovie, trailer, getTrailerMovie, loader } = useMoviesStore();
+const DetailBanner = ({ id, mediaType }) => {
+  const { oneMovie, trailer, getTrailerMovie, getDetails, loader } =
+    useMoviesStore();
 
   const [modalWindow, setModalWindow] = useState(false);
   const [videoKey, setVideoKey] = useState("");
   const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
-    getTrailerMovie(id);
-  }, [id]);
+    getDetails(id, mediaType);
+    getTrailerMovie(id, mediaType);
+  }, [id, mediaType]);
 
   const openModal = (key) => {
     setVideoKey(key);
@@ -50,9 +52,7 @@ const DetailBanner = ({ id }) => {
   const longWords = words.length > 300;
   const shortWords = words.slice(0, 300).join("") + "...";
 
-  if (loader) {
-    return <SkeletonBanner />;
-  }
+  if (loader) return <SkeletonBanner />;
 
   return (
     <div className={scss.detailBanner}>
@@ -93,25 +93,28 @@ const DetailBanner = ({ id }) => {
                 />
               </div>
 
-              <div
-                className={scss.playbtn}
-                onClick={() => openModal(trailer.key)}
-              >
-                <svg viewBox="0 0 213.7 213.7">
-                  <polygon
-                    className={scss.triangle}
-                    points="73.5,62.5 148.5,105.8 73.5,149.1"
-                  />
-                  <circle
-                    className={scss.circle}
-                    cx="106.8"
-                    cy="106.8"
-                    r="103.3"
-                  />
-                </svg>
-                <span className={scss.textTriler}>Watch Trailer</span>
-              </div>
+              {trailer && (
+                <div
+                  className={scss.playbtn}
+                  onClick={() => openModal(trailer.key)}
+                >
+                  <svg viewBox="0 0 213.7 213.7">
+                    <polygon
+                      className={scss.triangle}
+                      points="73.5,62.5 148.5,105.8 73.5,149.1"
+                    />
+                    <circle
+                      className={scss.circle}
+                      cx="106.8"
+                      cy="106.8"
+                      r="103.3"
+                    />
+                  </svg>
+                  <span className={scss.textTriler}>Watch Trailer</span>
+                </div>
+              )}
             </div>
+
             <div className={scss.text_description}>
               <h1>Overview</h1>
               <p>
@@ -126,6 +129,7 @@ const DetailBanner = ({ id }) => {
                 )}
               </p>
             </div>
+
             <div className={scss.text_info}>
               <div className={scss.status}>
                 <div className={scss.status_text}>
@@ -159,6 +163,7 @@ const DetailBanner = ({ id }) => {
           </div>
         </div>
       </div>
+
       {modalWindow && (
         <div className={scss.modalOpen} onClick={() => setModalWindow(false)}>
           <iframe
