@@ -4,7 +4,6 @@ import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import { useEffect, useState } from "react";
 import notImg from "../../../../assets/Снимок экрана 2025-06-21 в 15.28.03.png";
 import SkeletonBanner from "../../../../ui/skeleton/bannerSkeleton/SkeletonBanner";
-import { motion } from "framer-motion";
 
 const DetailBanner = ({ id, mediaType }) => {
   const { oneMovie, trailer, getTrailerMovie, getDetails, loader } =
@@ -63,12 +62,7 @@ const DetailBanner = ({ id, mediaType }) => {
         alt="background"
       />
       <div className="container">
-        <motion.div
-          className={scss.content}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
+        <div className={scss.content}>
           <img
             src={
               oneMovie.poster_path
@@ -167,7 +161,7 @@ const DetailBanner = ({ id, mediaType }) => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {modalWindow && (

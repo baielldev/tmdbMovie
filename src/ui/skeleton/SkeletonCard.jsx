@@ -1,8 +1,9 @@
-import scss from "./Skeleton.module.scss";
 import Skeleton from "@mui/material/Skeleton";
+import scss from "../MoviesCard/MoviesCard.module.scss";
+
 const SkeletonCard = () => {
   return (
-    <div className={scss.skeletonWrapper}>
+    <div className={scss.card_box}>
       <Skeleton
         variant="rounded"
         width={215}
@@ -10,22 +11,22 @@ const SkeletonCard = () => {
         animation="wave"
         style={{ borderRadius: "15px" }}
       />
-      <Skeleton
-        className={scss.ratingSkeleton}
-        variant="rounded"
-        width={51}
-        height={51}
-        animation="wave"
-        style={{ borderRadius: "50%" }}
-      />
-      <Skeleton
-        className={scss.title}
-        variant="rounded"
-        width={215}
-        height={20}
-        animation="wave"
-      />
-      <Skeleton variant="rounded" width={100} height={20} animation="wave" />
+      <div className={scss.card_info}>
+        <Skeleton
+          variant="text"
+          width={215}
+          height={25}
+          animation="wave"
+          style={{ borderRadius: "4px" }}
+        />
+        <Skeleton
+          variant="text"
+          width={120}
+          height={20}
+          animation="wave"
+          style={{ borderRadius: "4px" }}
+        />
+      </div>
     </div>
   );
 };
