@@ -19,40 +19,32 @@ const Carousel = ({ data }) => {
         : container.scrollLeft + (container.offsetWidth + 20);
     container.scrollTo({ left: amount, behavior: "smooth" });
     setShow(amount);
-    console.log(amount);
   };
+
   return (
     <div className={scss.carousel}>
       <div className={scss.carouselItem}>
-        {show < 3000 ? (
+        {show < 3000 && (
           <FaCircleArrowRight
             onClick={() => scroll("right")}
             className={`${scss.arrow} ${scss.iconRight}`}
           />
-        ) : (
-          ""
         )}
 
-        {show > 0 ? (
+        {show > 0 && (
           <FaCircleArrowLeft
             onClick={() => scroll("left")}
             className={`${scss.arrow} ${scss.iconLeft}`}
           />
-        ) : (
-          ""
         )}
 
         <div ref={carouselRef} className={scss.list}>
-          {loader
-            ? Array(6)
-                .fill(0)
-                .map((_, index) => <SkeletonCard key={index} />)
-            : data?.map((item, index) => (
-                <div key={index}>
-                  <MoviesCard item={item} />
-                  <Rating rating={item.vote_average} />
-                </div>
-              ))}
+          {(loader ? Array(6).fill(null) : data)?.map((item, index) => (
+            <div key={index}>
+              {loader ? <SkeletonCard /> : <MoviesCard item={item} />}
+              {!loader && <Rating rating={item.vote_average} />}
+            </div>
+          ))}
         </div>
       </div>
     </div>

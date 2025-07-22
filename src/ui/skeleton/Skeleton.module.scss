@@ -1,12 +1,13 @@
-.skeletonWrapper {
-  padding-top: 50px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  gap: 25px;
-  .ratingSkeleton {
-    position: absolute;
-    bottom: 72px;
-    left: 20px;
-  }
+.imageSkeleton {
+  border-radius: 15px;
+  width: 100%;
+  max-width: 220px;
+}
+
+.titleSkeleton {
+  border-radius: 4px;
+}
+
+.textSkeleton {
+  border-radius: 4px;
 }
