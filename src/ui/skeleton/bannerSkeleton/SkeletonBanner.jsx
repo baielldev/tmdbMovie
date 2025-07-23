@@ -38,7 +38,6 @@ const SkeletonBanner = () => {
               <Skeleton variant="text" width="80%" height={30} />
               <Skeleton variant="text" width="100%" />
               <Skeleton variant="text" width="95%" />
-              <Skeleton variant="text" width="60%" />
             </div>
 
             <div className={scss.text_info}>
