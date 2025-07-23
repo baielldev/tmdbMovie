@@ -54,7 +54,7 @@ export const useMoviesStore = create((set, get) => ({
       console.error("Ошибка запроса:", error.message);
       set({ error: error.message });
     }
-    set({ loader: false });
+    setTimeout(() => set({ loader: false }), 500);
   },
 
   getTrending: async () => {
@@ -69,7 +69,7 @@ export const useMoviesStore = create((set, get) => ({
       console.error("Ошибка запроса:", error.message);
       set({ error: error.message });
     }
-    set({ loader: false });
+    setTimeout(() => set({ loader: false }), 500);
   },
 
   getTopRated: async () => {
@@ -84,7 +84,7 @@ export const useMoviesStore = create((set, get) => ({
       console.error("Ошибка запроса:", error.message);
       set({ error: error.message });
     }
-    set({ loader: false });
+    setTimeout(() => set({ loader: false }), 500);
   },
 
   getDetails: async (id, mediaType) => {
@@ -99,7 +99,7 @@ export const useMoviesStore = create((set, get) => ({
       set({ error: error.message });
     }
 
-    set({ loader: false });
+    setTimeout(() => set({ loader: false }), 500);
   },
 
   getActors: async (id, mediaType = null) => {

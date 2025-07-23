@@ -39,10 +39,16 @@ const Carousel = ({ data }) => {
         )}
 
         <div ref={carouselRef} className={scss.list}>
-          {(loader ? Array(6).fill(null) : data)?.map((item, index) => (
+          {(loader ? Array(6).fill(0) : data)?.map((item, index) => (
             <div key={index}>
-              {loader ? <SkeletonCard /> : <MoviesCard item={item} />}
-              {!loader && <Rating rating={item.vote_average} />}
+              {loader ? (
+                <SkeletonCard />
+              ) : (
+                <>
+                  <MoviesCard item={item} />
+                  <Rating rating={item.vote_average} />
+                </>
+              )}
             </div>
           ))}
         </div>
